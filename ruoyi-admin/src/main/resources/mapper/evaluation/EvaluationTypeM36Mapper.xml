@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.mapper.EvaluationTypeM36Mapper">
+    
+    <resultMap type="EvaluationTypeM36" id="EvaluationTypeM36Result">
+        <result property="id"    column="id"    />
+        <result property="firstLevelType"    column="first_level_type"    />
+        <result property="scores"    column="scores"    />
+    </resultMap>
+
+    <sql id="selectEvaluationTypeM36Vo">
+        select id, first_level_type, scores from evaluation_type_M36
+    </sql>
+
+    <select id="selectEvaluationTypeM36List" parameterType="EvaluationTypeM36" resultMap="EvaluationTypeM36Result">
+        <include refid="selectEvaluationTypeM36Vo"/>
+        <where>  
+            <if test="firstLevelType != null  and firstLevelType != ''"> and first_level_type = #{firstLevelType}</if>
+            <if test="scores != null "> and scores = #{scores}</if>
+        </where>
+    </select>
+    
+    <select id="selectEvaluationTypeM36ById" parameterType="Long" resultMap="EvaluationTypeM36Result">
+        <include refid="selectEvaluationTypeM36Vo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertEvaluationTypeM36" parameterType="EvaluationTypeM36" useGeneratedKeys="true" keyProperty="id">
+        insert into evaluation_type_M36
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="firstLevelType != null">first_level_type,</if>
+            <if test="scores != null">scores,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="firstLevelType != null">#{firstLevelType},</if>
+            <if test="scores != null">#{scores},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEvaluationTypeM36" parameterType="EvaluationTypeM36">
+        update evaluation_type_M36
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="firstLevelType != null">first_level_type = #{firstLevelType},</if>
+            <if test="scores != null">scores = #{scores},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEvaluationTypeM36ById" parameterType="Long">
+        delete from evaluation_type_M36 where id = #{id}
+    </delete>
+
+    <delete id="deleteEvaluationTypeM36ByIds" parameterType="String">
+        delete from evaluation_type_M36 where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

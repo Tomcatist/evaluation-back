@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.web.mapper.ApplicationMapper">
+    
+    <resultMap type="Application" id="ApplicationResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="applyName"    column="apply_name"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="applyType"    column="apply_type"    />
+        <result property="applyTypeId"    column="apply_type_id"    />
+        <result property="applyContent"    column="apply_content"    />
+        <result property="applyLink"    column="apply_link"    />
+        <result property="applyMark"    column="apply_mark"    />
+        <result property="applyResult"    column="apply_result"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectApplicationVo">
+        select id, user_id, apply_name, apply_type, apply_type_id, apply_content, apply_link, apply_mark, apply_result, create_time, update_time from application
+    </sql>
+
+    <select id="selectApplicationList" parameterType="Application" resultMap="ApplicationResult">
+        <include refid="selectApplicationVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="applyName != null  and applyName != ''"> and apply_name like concat('%', #{applyName}, '%')</if>
+            <if test="deptName != null  and deptName != ''"> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="applyType != null  and applyType != ''"> and apply_type like concat('%', #{applyType}, '%')</if>
+            <if test="applyTypeId != null "> and apply_type_id = #{applyTypeId}</if>
+            <if test="applyContent != null  and applyContent != ''"> and apply_content = #{applyContent}</if>
+            <if test="applyLink != null  and applyLink != ''"> and apply_link = #{applyLink}</if>
+            <if test="applyMark != null  and applyMark != ''"> and apply_mark = #{applyMark}</if>
+            <if test="applyResult != null "> and apply_result = #{applyResult}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectApplicationById" parameterType="Long" resultMap="ApplicationResult">
+        <include refid="selectApplicationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertApplication" parameterType="Application" useGeneratedKeys="true" keyProperty="id">
+        insert into application
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="applyName != null">apply_name,</if>
+            <if test="deptName != null">dept_name,</if>
+            <if test="applyType != null">apply_type,</if>
+            <if test="applyTypeId != null">apply_type_id,</if>
+            <if test="applyContent != null">apply_content,</if>
+            <if test="applyLink != null">apply_link,</if>
+            <if test="applyMark != null">apply_mark,</if>
+            <if test="applyResult != null">apply_result,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="applyName != null">#{applyName},</if>
+            <if test="deptName != null">#{deptName},</if>
+            <if test="applyType != null">#{applyType},</if>
+            <if test="applyTypeId != null">#{applyTypeId},</if>
+            <if test="applyContent != null">#{applyContent},</if>
+            <if test="applyLink != null">#{applyLink},</if>
+            <if test="applyMark != null">#{applyMark},</if>
+            <if test="applyResult != null">#{applyResult},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateApplication" parameterType="Application">
+        update application
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="applyName != null">apply_name = #{applyName},</if>
+            <if test="applyType != null">apply_type = #{applyType},</if>
+            <if test="applyTypeId != null">apply_type_id = #{applyTypeId},</if>
+            <if test="applyContent != null">apply_content = #{applyContent},</if>
+            <if test="applyLink != null">apply_link = #{applyLink},</if>
+            <if test="applyMark != null">apply_mark = #{applyMark},</if>
+            <if test="applyResult != null">apply_result = #{applyResult},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteApplicationById" parameterType="Long">
+        delete from application where id = #{id}
+    </delete>
+
+    <delete id="deleteApplicationByIds" parameterType="String">
+        delete from application where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
